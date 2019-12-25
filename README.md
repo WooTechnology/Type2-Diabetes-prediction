@@ -5,5 +5,5 @@ India is home to over 60 million adults with diabetes (7.8% of the population), 
 
 Prerequisites-
 Python version used in the project-3.6.6
-Libraries used-Numpy,Panda,Matplotlib,Scikit-learn,Scipy
+Libraries used-Numpy,Panda,Matplotlib,Scikit-learn,Seaborn
 To run the project we need a software like Anaconda. From Anaconda just set as working directory the folder of the project, open the .py file you want from Models folder and run this file or press F5.
