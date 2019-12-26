@@ -11,7 +11,7 @@ Scikit-learn
 Seaborn
 
 Algorithms used- 
-LLogistic Regression
+Logistic Regression
 Support Vector Machine
 KNN
 Random Forest Classifier
