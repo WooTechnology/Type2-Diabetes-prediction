@@ -154,8 +154,27 @@ train_X,test_X,train_y,test_y=train_test_split(X,y,test_size=0.2)
 train_X.shape,test_X.shape,train_y.shape,test_y.shape
 
 
-# In[ ]:
+# In[24]:
+# Applying logistic regression model
+from sklearn.linear_model import LogisticRegression
 
+from sklearn.metrics import roc_auc_score
+def find_model_perf(X_train, y_train, X_test, y_test):
+    model = LogisticRegression()
+    model.fit(train_X, train_y)
+    y_hat = [x[1] for x in model.predict_proba(test_X)]
+    auc = roc_auc_score(y_test, y_hat)
+    score = model.score(test_X, test_y)
+    
+    print("AUC:",auc)
+    print("Accuracy Score: ",score)
+    
+auc_processed = find_model_perf(train_X, train_y, test_X, test_y)
+print(auc_processed)
+
+# Result is  as follows:
+#AUC: 0.8014950166112957
+#Accuracy Score:  0.7421875
 
 
 
