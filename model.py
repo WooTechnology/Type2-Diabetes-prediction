@@ -176,5 +176,57 @@ print(auc_processed)
 #AUC: 0.8014950166112957
 #Accuracy Score:  0.7421875
 
+# In[25]
+# Applying Support Vector Machine
+from sklearn.svm import SVC
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 
+class SVMModel:
+    
+    def __init__(self):
+        self.classifier = SVC()
 
+    def train(self, train_X, train_y):
+        model = self.classifier.fit(train_X, train_y)
+        return model
+    
+    def predict(self, model, test_X):
+        return model.predict(test_X)
+    
+    def evaluate(self, test_y,pred_y, measure):
+        if measure=='matrix':
+            cm = confusion_matrix(test_y, pred_y , labels=[0, 1])
+            return cm
+        elif measure=='accuracy':
+            return accuracy_score(test_y, pred_y)*100
+        else: return None
+       
+svm = SVMModel()
+model = svm.train(train_X, train_y)
+predictions = svm.predict(model, test_X)
+
+print (svm.evaluate(test_y, predictions, 'matrix'))
+print 
+print (svm.evaluate(test_y, predictions, 'accuracy'))
+
+#Result:
+#[[87  0]
+#[41  0]]
+#67.96875
+
+#KNN Model:
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn import neighbors, preprocessing
+
+from sklearn import metrics
+
+knn = neighbors.KNeighborsClassifier()
+knn.fit(train_X, train_y)
+
+accuracy = knn.score(test_X, test_y)
+prediction = knn.predict(test_X)
+accuracy
+
+#Result:
+#0.734375
