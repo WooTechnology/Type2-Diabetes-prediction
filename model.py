@@ -175,6 +175,3 @@ print(auc_processed)
 # Result is  as follows:
 #AUC: 0.8014950166112957
 #Accuracy Score:  0.7421875
-
-
-
