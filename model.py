@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 import pandas as pd
@@ -11,41 +11,41 @@ import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[5]:
+# In[2]:
 
 
 pwd
 
 
-# In[10]:
+# In[3]:
 
 
 variable=pd.read_csv(r"C:\Users\aknar\Type2-Diabetes-prediction\Dataset\diabetes.csv")
 variable
 
 
-# In[5]:
+# In[4]:
 
 
 #Describe data
 variable.describe()
 
 
-# In[11]:
+# In[5]:
 
 
 #information of dataset
 variable.info()
 
 
-# In[7]:
+# In[6]:
 
 
 #Check for all null values
 variable.isnull().values.any()
 
 
-# In[8]:
+# In[7]:
 
 
 #histogram
@@ -53,7 +53,7 @@ variable.hist(bins=10, figsize=(10,10))
 plt.show()
 
 
-# In[9]:
+# In[8]:
 
 
 #Correlation
@@ -62,7 +62,7 @@ sns.heatmap(variable.corr())
 #age and pregnanacies have negative correlation
 
 
-# In[10]:
+# In[9]:
 
 
 #lets count total outcome in each target 0 1
@@ -71,14 +71,14 @@ sns.heatmap(variable.corr())
 sns.countplot(y=variable['OUTCOME'],palette='Set1')
 
 
-# In[11]:
+# In[10]:
 
 
 sns.set(style="ticks")
 sns.pairplot(variable, hue="OUTCOME")
 
 
-# In[14]:
+# In[11]:
 
 
 #box plot for outlier visualisation
@@ -100,7 +100,7 @@ sns.boxplot(x=variable['DIABETES PEDIGREE FUNCTION'])
 plt.show()
 
 
-# In[14]:
+# In[12]:
 
 
 #outlier remove
@@ -114,7 +114,7 @@ print("\n---IQR---\n",IQR)
 #print((df < (Q1 - 1.5 * IQR))|(df > (Q3 + 1.5 * IQR)))
 
 
-# In[15]:
+# In[13]:
 
 
 #outlier remove
@@ -123,7 +123,7 @@ variable.shape,variable_out.shape
 #more than 80 records deleted
 
 
-# In[16]:
+# In[14]:
 
 
 #Scatter matrix after removing outlier
@@ -132,7 +132,7 @@ sns.pairplot(variable_out, hue="OUTCOME")
 plt.show()
 
 
-# In[17]:
+# In[15]:
 
 
 #lets extract features and targets
@@ -140,7 +140,7 @@ X=variable_out.drop(columns=['OUTCOME'])
 y=variable_out['OUTCOME']
 
 
-# In[18]:
+# In[16]:
 
 
 #Splitting train test data 80 20 ratio
@@ -148,13 +148,13 @@ from sklearn.model_selection import train_test_split
 train_X,test_X,train_y,test_y=train_test_split(X,y,test_size=0.2)
 
 
-# In[19]:
+# In[17]:
 
 
 train_X.shape,test_X.shape,train_y.shape,test_y.shape
 
 
-# In[20]:
+# In[18]:
 
 
 from sklearn.metrics import confusion_matrix,accuracy_score,make_scorer
@@ -176,7 +176,7 @@ def display_result(result):
     print("FP: ",result['test_fp'])
 
 
-# In[21]:
+# In[19]:
 
 
 #Logistic Regression
@@ -206,7 +206,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[23]:
+# In[20]:
 
 
 #Support Vector Machine
@@ -232,7 +232,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[24]:
+# In[21]:
 
 
 #KNN
@@ -259,60 +259,105 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
+# In[22]:
+
+
+#Random forest
+from sklearn.ensemble import RandomForestClassifier
+
+clf=RandomForestClassifier()
+clf.fit(train_X,train_y)
+
+y_pred=clf.predict(test_X)
+#find accuracy
+ac=accuracy_score(test_y,y_pred)
+acc.append(ac)
+
+#find the ROC_AOC curve
+rc=roc_auc_score(test_y,y_pred)
+roc.append(rc)
+print("\nAccuracy {0} ROC {1}".format(ac,rc))
+
+#cross val score
+result=cross_validate(clf,train_X,train_y,scoring=scoring,cv=10)
+display_result(result)
+
+#display predicted values uncomment below line
+#pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
+
+
+# In[23]:
+
+
+#Naive Bayes Theorem
+#import library
+from sklearn.naive_bayes import GaussianNB
+
+clf=GaussianNB()
+clf.fit(train_X,train_y)
+y_pred=clf.predict(test_X)
+#find accuracy
+ac=accuracy_score(test_y,y_pred)
+acc.append(ac)
+
+#find the ROC_AOC curve
+rc=roc_auc_score(test_y,y_pred)
+roc.append(rc)
+print("\nAccuracy {0} ROC {1}".format(ac,rc))
+
+#cross val score
+result=cross_validate(clf,train_X,train_y,scoring=scoring,cv=10)
+display_result(result)
+
+#display predicted values uncomment below line
+#pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
+
+
+# In[24]:
+
+
+#Gradient Boosting Classifier
+from sklearn.ensemble import GradientBoostingClassifier
+clf=GradientBoostingClassifier(n_estimators=50,learning_rate=0.2)
+clf.fit(train_X,train_y)
+y_pred=clf.predict(test_X)
+#find accuracy
+ac=accuracy_score(test_y,y_pred)
+acc.append(ac)
+
+#find the ROC_AOC curve
+rc=roc_auc_score(test_y,y_pred)
+roc.append(rc)
+print("\nAccuracy {0} ROC {1}".format(ac,rc))
+
+#cross val score
+result=cross_validate(clf,train_X,train_y,scoring=scoring,cv=10)
+display_result(result)
+
+#display predicted values uncomment below line
+#pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
+
+
+# In[25]:
+
+
+#lets plot the bar graph
+
+ax=plt.figure(figsize=(9,4))
+plt.bar(['Logistic Regression','SVM','KNN','Random Forest','Naivye Bayes','Gradient Boosting'],acc,label='Accuracy')
+plt.ylabel('Accuracy Score')
+plt.xlabel('Algortihms')
+plt.show()
+
+ax=plt.figure(figsize=(9,4))
+plt.bar(['Logistic Regression','SVM','KNN','Random Forest','Naivye Bayes','Gradient Boosting'],roc,label='ROC AUC')
+plt.ylabel('ROC AUC')
+plt.xlabel('Algortihms')
+plt.show()
+
+
 # In[ ]:
 
 
-# In[25]
-# Applying Support Vector Machine
-from sklearn.svm import SVC
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
 
-class SVMModel:
-    
-    def __init__(self):
-        self.classifier = SVC()
 
-    def train(self, train_X, train_y):
-        model = self.classifier.fit(train_X, train_y)
-        return model
-    
-    def predict(self, model, test_X):
-        return model.predict(test_X)
-    
-    def evaluate(self, test_y,pred_y, measure):
-        if measure=='matrix':
-            cm = confusion_matrix(test_y, pred_y , labels=[0, 1])
-            return cm
-        elif measure=='accuracy':
-            return accuracy_score(test_y, pred_y)*100
-        else: return None
-       
-svm = SVMModel()
-model = svm.train(train_X, train_y)
-predictions = svm.predict(model, test_X)
-
-print (svm.evaluate(test_y, predictions, 'matrix'))
-print 
-print (svm.evaluate(test_y, predictions, 'accuracy'))
-
-#Result:
-#[[87  0]
-#[41  0]]
-#67.96875
-
-#KNN Model:
-from sklearn.neighbors import KNeighborsClassifier 
-from sklearn import neighbors, preprocessing
-
-from sklearn import metrics
-
-knn = neighbors.KNeighborsClassifier()
-knn.fit(train_X, train_y)
-
-accuracy = knn.score(test_X, test_y)
-prediction = knn.predict(test_X)
-accuracy
-
-#Result:
-#0.734375
