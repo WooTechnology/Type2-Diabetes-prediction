@@ -100,7 +100,7 @@ sns.boxplot(x=variable['DIABETES PEDIGREE FUNCTION'])
 plt.show()
 
 
-# In[12]:
+# In[13]:
 
 
 #outlier remove
@@ -114,7 +114,7 @@ print("\n---IQR---\n",IQR)
 #print((df < (Q1 - 1.5 * IQR))|(df > (Q3 + 1.5 * IQR)))
 
 
-# In[13]:
+# In[14]:
 
 
 #outlier remove
@@ -123,7 +123,7 @@ variable.shape,variable_out.shape
 #more than 80 records deleted
 
 
-# In[14]:
+# In[15]:
 
 
 #Scatter matrix after removing outlier
@@ -132,7 +132,7 @@ sns.pairplot(variable_out, hue="OUTCOME")
 plt.show()
 
 
-# In[15]:
+# In[16]:
 
 
 #lets extract features and targets
@@ -140,7 +140,7 @@ X=variable_out.drop(columns=['OUTCOME'])
 y=variable_out['OUTCOME']
 
 
-# In[16]:
+# In[17]:
 
 
 #Splitting train test data 80 20 ratio
@@ -148,13 +148,13 @@ from sklearn.model_selection import train_test_split
 train_X,test_X,train_y,test_y=train_test_split(X,y,test_size=0.2)
 
 
-# In[17]:
+# In[18]:
 
 
 train_X.shape,test_X.shape,train_y.shape,test_y.shape
 
 
-# In[18]:
+# In[19]:
 
 
 from sklearn.metrics import confusion_matrix,accuracy_score,make_scorer
@@ -176,7 +176,7 @@ def display_result(result):
     print("FP: ",result['test_fp'])
 
 
-# In[19]:
+# In[20]:
 
 
 #Logistic Regression
@@ -206,7 +206,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[20]:
+# In[21]:
 
 
 #Support Vector Machine
@@ -232,7 +232,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[21]:
+# In[22]:
 
 
 #KNN
@@ -259,7 +259,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[22]:
+# In[23]:
 
 
 #Random forest
@@ -286,7 +286,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[23]:
+# In[24]:
 
 
 #Naive Bayes Theorem
@@ -313,7 +313,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[24]:
+# In[25]:
 
 
 #Gradient Boosting Classifier
@@ -338,7 +338,7 @@ display_result(result)
 #pd.DataFrame(data={'Actual':test_y,'Predicted':y_pred}).head()
 
 
-# In[25]:
+# In[26]:
 
 
 #lets plot the bar graph
